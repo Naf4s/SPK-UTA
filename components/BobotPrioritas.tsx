@@ -22,6 +22,7 @@ type Kriteria = {
   id: number;
   nama: string;
   kode: string;
+  tipe: string;
   bobot: number;
   rawValue?: number;
 };
