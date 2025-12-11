@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Model Kriteria: Definisi parameter penilaian
+model Kriteria {
+  id        Int       @id @default(autoincrement())
+  kode      String    @unique // Contoh: "C1", "C2", atau "RAM"
+  nama      String    // Contoh: "Kapasitas RAM"
+  tipe      String    // "benefit" atau "cost" [cite: 5]
+  bobot     Float     // Nilai prioritas (total harus 1 jika dinormalisasi)
+  
+  // Relasi: Satu kriteria punya banyak nilai di tabel matriks
+  matriks   Matriks[] 
+}
+
+// Model Alternatif: Data Laptop
+model Alternatif {
+  id        Int       @id @default(autoincrement())
+  nama      String    // Contoh: "Asus TUF F15"
+  detail    String?   // Deskripsi tambahan (opsional)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relasi: Satu laptop punya banyak nilai matriks (satu per kriteria)
+  matriks   Matriks[]
+}
+
+// Model Matriks: Jembatan penghubung nilai
+// User TIDAK akan mengisi tabel ini secara manual. 
+// Sistem akan mengisinya otomatis saat Laptop dibuat.
+model Matriks {
+  id           Int        @id @default(autoincrement())
+  nilai        Float      // Angka hasil konversi (misal RAM 8GB -> nilai 8)
+  
+  alternatifId Int
+  alternatif   Alternatif @relation(fields: [alternatifId], references: [id], onDelete: Cascade)
+  
+  kriteriaId   Int
+  kriteria     Kriteria   @relation(fields: [kriteriaId], references: [id])
+
+  @@unique([alternatifId, kriteriaId]) // Mencegah duplikasi nilai kriteria yg sama pada 1 laptop
+}

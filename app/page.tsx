@@ -1,65 +1,137 @@
-import Image from "next/image";
+// import BobotPrioritas from "@/components/BobotPrioritas";
+// import FormLaptop from "@/components/FormLaptop";
+// import HasilRanking from "@/components/HasilRanking";
+// import GrafikPerbandingan from "@/components/GrafikPerbandingan";
+// import DashboardSummary from "@/components/DashboardSummary";
 
-export default function Home() {
+// export default function Home() {
+//   return (
+//     <main className="min-h-screen bg-gray-50 p-8">
+//       <div className="max-w-6xl mx-auto space-y-8">
+        
+//         <header className="mb-8 text-center pt-8">
+//           <div className="inline-block p-3 rounded-full bg-blue-100 mb-4">
+//             <span className="text-4xl">⚖️</span>
+//           </div>
+//           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-2">
+//             SPK Pemilihan Laptop
+//           </h1>
+//           <p className="text-gray-500 text-lg">
+//             Sistem Pendukung Keputusan Cerdas dengan Metode UTA
+//           </p>
+//         </header>
+
+// <DashboardSummary />
+
+//         {/* Layout Grid: Kiri (Input & Bobot) - Kanan (Hasil & Grafik) */}
+//         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+//           {/* KOLOM KIRI: Area Kerja User (Input) */}
+//           <div className="lg:col-span-5 space-y-6">
+//             <BobotPrioritas />
+//             <FormLaptop />
+//           </div>
+
+//           {/* KOLOM KANAN: Area Visualisasi (Output) */}
+//           <div className="lg:col-span-7 space-y-6">
+//             <GrafikPerbandingan />
+//             <HasilRanking />
+//           </div>
+
+//         </div>
+
+//         {/* 1. Modul Pengaturan Prioritas */}
+//         <section>
+//           <BobotPrioritas />
+//         </section>
+
+//         {/* 2. Modul Input Data */}
+//         <section>
+//           <FormLaptop />
+//         </section>
+
+//         {/* 3. Grafik Analisis (Baru) */}
+//         <section>
+//           <GrafikPerbandingan />
+//         </section>
+
+//         {/* 4. Hasil Perhitungan (Baru) */}
+//         <section>
+//           <HasilRanking />
+//         </section>
+
+//       </div>
+//     </main>
+//   );
+// }
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, BarChart3, Laptop, Settings } from "lucide-react";
+
+export default function LandingPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col items-center justify-center p-6">
+      
+      {/* Hero Section */}
+      <div className="text-center max-w-3xl space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-1000">
+        <div className="inline-block p-4 rounded-full bg-blue-100 mb-4 shadow-sm">
+          <span className="text-4xl">⚖️</span>
+        </div>
+        <h1 className="text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+          Sistem Pendukung Keputusan <br/>
+          <span className="text-blue-600">Pemilihan Laptop Terbaik</span>
+        </h1>
+        <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+          Bingung memilih laptop untuk kuliah atau kerja? Gunakan metode UTA (Utility Additive) untuk menemukan rekomendasi paling akurat sesuai prioritasmu.
+        </p>
+
+        <div className="flex gap-4 justify-center pt-8">
+          <Link href="/spk/data">
+            <Button size="lg" className="text-lg h-14 px-8 bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200">
+              Mulai Analisis Sekarang <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
+          <Link href="/dashboard">
+            <Button variant="outline" size="lg" className="text-lg h-14 px-8">
+              Lihat Dashboard
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Feature Cards */}
+      <div className="grid md:grid-cols-3 gap-8 mt-20 max-w-5xl w-full">
+        <FeatureCard 
+          icon={<Laptop className="h-8 w-8 text-blue-500" />}
+          title="Input Fleksibel"
+          desc="Masukkan spesifikasi laptop kandidat dengan mudah dan cepat."
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        <FeatureCard 
+          icon={<Settings className="h-8 w-8 text-purple-500" />}
+          title="Atur Prioritas"
+          desc="Tentukan kriteria mana yang paling penting bagimu (Harga vs Performa)."
+        />
+        <FeatureCard 
+          icon={<BarChart3 className="h-8 w-8 text-orange-500" />}
+          title="Analisis Visual"
+          desc="Lihat perbandingan grafik dan ranking skor yang transparan."
+        />
+      </div>
+
+      <footer className="mt-20 text-gray-400 text-sm">
+        © 2025 SPK UTA. Created with ❤️ Next.js & Shadcn/ui.
+      </footer>
+    </div>
+  );
+}
+
+function FeatureCard({ icon, title, desc }: any) {
+  return (
+    <div className="p-6 bg-white rounded-xl shadow-md border hover:shadow-lg transition-all">
+      <div className="mb-4 bg-gray-50 w-fit p-3 rounded-lg">{icon}</div>
+      <h3 className="font-bold text-xl mb-2">{title}</h3>
+      <p className="text-gray-500">{desc}</p>
     </div>
   );
 }
