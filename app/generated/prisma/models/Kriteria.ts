@@ -42,6 +42,11 @@ export type KriteriaMinAggregateOutputType = {
   nama: string | null
   tipe: string | null
   bobot: number | null
+  aktif: boolean | null
+  isSystem: boolean | null
+  isDropdown: boolean | null
+  options: string | null
+  sessionId: string | null
 }
 
 export type KriteriaMaxAggregateOutputType = {
@@ -50,6 +55,11 @@ export type KriteriaMaxAggregateOutputType = {
   nama: string | null
   tipe: string | null
   bobot: number | null
+  aktif: boolean | null
+  isSystem: boolean | null
+  isDropdown: boolean | null
+  options: string | null
+  sessionId: string | null
 }
 
 export type KriteriaCountAggregateOutputType = {
@@ -58,6 +68,11 @@ export type KriteriaCountAggregateOutputType = {
   nama: number
   tipe: number
   bobot: number
+  aktif: number
+  isSystem: number
+  isDropdown: number
+  options: number
+  sessionId: number
   _all: number
 }
 
@@ -78,6 +93,11 @@ export type KriteriaMinAggregateInputType = {
   nama?: true
   tipe?: true
   bobot?: true
+  aktif?: true
+  isSystem?: true
+  isDropdown?: true
+  options?: true
+  sessionId?: true
 }
 
 export type KriteriaMaxAggregateInputType = {
@@ -86,6 +106,11 @@ export type KriteriaMaxAggregateInputType = {
   nama?: true
   tipe?: true
   bobot?: true
+  aktif?: true
+  isSystem?: true
+  isDropdown?: true
+  options?: true
+  sessionId?: true
 }
 
 export type KriteriaCountAggregateInputType = {
@@ -94,6 +119,11 @@ export type KriteriaCountAggregateInputType = {
   nama?: true
   tipe?: true
   bobot?: true
+  aktif?: true
+  isSystem?: true
+  isDropdown?: true
+  options?: true
+  sessionId?: true
   _all?: true
 }
 
@@ -189,6 +219,11 @@ export type KriteriaGroupByOutputType = {
   nama: string
   tipe: string
   bobot: number
+  aktif: boolean
+  isSystem: boolean
+  isDropdown: boolean
+  options: string | null
+  sessionId: string | null
   _count: KriteriaCountAggregateOutputType | null
   _avg: KriteriaAvgAggregateOutputType | null
   _sum: KriteriaSumAggregateOutputType | null
@@ -220,6 +255,11 @@ export type KriteriaWhereInput = {
   nama?: Prisma.StringFilter<"Kriteria"> | string
   tipe?: Prisma.StringFilter<"Kriteria"> | string
   bobot?: Prisma.FloatFilter<"Kriteria"> | number
+  aktif?: Prisma.BoolFilter<"Kriteria"> | boolean
+  isSystem?: Prisma.BoolFilter<"Kriteria"> | boolean
+  isDropdown?: Prisma.BoolFilter<"Kriteria"> | boolean
+  options?: Prisma.StringNullableFilter<"Kriteria"> | string | null
+  sessionId?: Prisma.StringNullableFilter<"Kriteria"> | string | null
   matriks?: Prisma.MatriksListRelationFilter
 }
 
@@ -229,6 +269,11 @@ export type KriteriaOrderByWithRelationInput = {
   nama?: Prisma.SortOrder
   tipe?: Prisma.SortOrder
   bobot?: Prisma.SortOrder
+  aktif?: Prisma.SortOrder
+  isSystem?: Prisma.SortOrder
+  isDropdown?: Prisma.SortOrder
+  options?: Prisma.SortOrderInput | Prisma.SortOrder
+  sessionId?: Prisma.SortOrderInput | Prisma.SortOrder
   matriks?: Prisma.MatriksOrderByRelationAggregateInput
 }
 
@@ -241,6 +286,11 @@ export type KriteriaWhereUniqueInput = Prisma.AtLeast<{
   nama?: Prisma.StringFilter<"Kriteria"> | string
   tipe?: Prisma.StringFilter<"Kriteria"> | string
   bobot?: Prisma.FloatFilter<"Kriteria"> | number
+  aktif?: Prisma.BoolFilter<"Kriteria"> | boolean
+  isSystem?: Prisma.BoolFilter<"Kriteria"> | boolean
+  isDropdown?: Prisma.BoolFilter<"Kriteria"> | boolean
+  options?: Prisma.StringNullableFilter<"Kriteria"> | string | null
+  sessionId?: Prisma.StringNullableFilter<"Kriteria"> | string | null
   matriks?: Prisma.MatriksListRelationFilter
 }, "id" | "kode">
 
@@ -250,6 +300,11 @@ export type KriteriaOrderByWithAggregationInput = {
   nama?: Prisma.SortOrder
   tipe?: Prisma.SortOrder
   bobot?: Prisma.SortOrder
+  aktif?: Prisma.SortOrder
+  isSystem?: Prisma.SortOrder
+  isDropdown?: Prisma.SortOrder
+  options?: Prisma.SortOrderInput | Prisma.SortOrder
+  sessionId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.KriteriaCountOrderByAggregateInput
   _avg?: Prisma.KriteriaAvgOrderByAggregateInput
   _max?: Prisma.KriteriaMaxOrderByAggregateInput
@@ -266,6 +321,11 @@ export type KriteriaScalarWhereWithAggregatesInput = {
   nama?: Prisma.StringWithAggregatesFilter<"Kriteria"> | string
   tipe?: Prisma.StringWithAggregatesFilter<"Kriteria"> | string
   bobot?: Prisma.FloatWithAggregatesFilter<"Kriteria"> | number
+  aktif?: Prisma.BoolWithAggregatesFilter<"Kriteria"> | boolean
+  isSystem?: Prisma.BoolWithAggregatesFilter<"Kriteria"> | boolean
+  isDropdown?: Prisma.BoolWithAggregatesFilter<"Kriteria"> | boolean
+  options?: Prisma.StringNullableWithAggregatesFilter<"Kriteria"> | string | null
+  sessionId?: Prisma.StringNullableWithAggregatesFilter<"Kriteria"> | string | null
 }
 
 export type KriteriaCreateInput = {
@@ -273,6 +333,11 @@ export type KriteriaCreateInput = {
   nama: string
   tipe: string
   bobot: number
+  aktif?: boolean
+  isSystem?: boolean
+  isDropdown?: boolean
+  options?: string | null
+  sessionId?: string | null
   matriks?: Prisma.MatriksCreateNestedManyWithoutKriteriaInput
 }
 
@@ -282,6 +347,11 @@ export type KriteriaUncheckedCreateInput = {
   nama: string
   tipe: string
   bobot: number
+  aktif?: boolean
+  isSystem?: boolean
+  isDropdown?: boolean
+  options?: string | null
+  sessionId?: string | null
   matriks?: Prisma.MatriksUncheckedCreateNestedManyWithoutKriteriaInput
 }
 
@@ -290,6 +360,11 @@ export type KriteriaUpdateInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   tipe?: Prisma.StringFieldUpdateOperationsInput | string
   bobot?: Prisma.FloatFieldUpdateOperationsInput | number
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDropdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  options?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matriks?: Prisma.MatriksUpdateManyWithoutKriteriaNestedInput
 }
 
@@ -299,6 +374,11 @@ export type KriteriaUncheckedUpdateInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   tipe?: Prisma.StringFieldUpdateOperationsInput | string
   bobot?: Prisma.FloatFieldUpdateOperationsInput | number
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDropdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  options?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matriks?: Prisma.MatriksUncheckedUpdateManyWithoutKriteriaNestedInput
 }
 
@@ -308,6 +388,11 @@ export type KriteriaCreateManyInput = {
   nama: string
   tipe: string
   bobot: number
+  aktif?: boolean
+  isSystem?: boolean
+  isDropdown?: boolean
+  options?: string | null
+  sessionId?: string | null
 }
 
 export type KriteriaUpdateManyMutationInput = {
@@ -315,6 +400,11 @@ export type KriteriaUpdateManyMutationInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   tipe?: Prisma.StringFieldUpdateOperationsInput | string
   bobot?: Prisma.FloatFieldUpdateOperationsInput | number
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDropdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  options?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type KriteriaUncheckedUpdateManyInput = {
@@ -323,6 +413,11 @@ export type KriteriaUncheckedUpdateManyInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   tipe?: Prisma.StringFieldUpdateOperationsInput | string
   bobot?: Prisma.FloatFieldUpdateOperationsInput | number
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDropdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  options?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type KriteriaCountOrderByAggregateInput = {
@@ -331,6 +426,11 @@ export type KriteriaCountOrderByAggregateInput = {
   nama?: Prisma.SortOrder
   tipe?: Prisma.SortOrder
   bobot?: Prisma.SortOrder
+  aktif?: Prisma.SortOrder
+  isSystem?: Prisma.SortOrder
+  isDropdown?: Prisma.SortOrder
+  options?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
 }
 
 export type KriteriaAvgOrderByAggregateInput = {
@@ -344,6 +444,11 @@ export type KriteriaMaxOrderByAggregateInput = {
   nama?: Prisma.SortOrder
   tipe?: Prisma.SortOrder
   bobot?: Prisma.SortOrder
+  aktif?: Prisma.SortOrder
+  isSystem?: Prisma.SortOrder
+  isDropdown?: Prisma.SortOrder
+  options?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
 }
 
 export type KriteriaMinOrderByAggregateInput = {
@@ -352,6 +457,11 @@ export type KriteriaMinOrderByAggregateInput = {
   nama?: Prisma.SortOrder
   tipe?: Prisma.SortOrder
   bobot?: Prisma.SortOrder
+  aktif?: Prisma.SortOrder
+  isSystem?: Prisma.SortOrder
+  isDropdown?: Prisma.SortOrder
+  options?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
 }
 
 export type KriteriaSumOrderByAggregateInput = {
@@ -364,10 +474,6 @@ export type KriteriaScalarRelationFilter = {
   isNot?: Prisma.KriteriaWhereInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
 export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -376,12 +482,8 @@ export type FloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type KriteriaCreateNestedOneWithoutMatriksInput = {
@@ -403,6 +505,11 @@ export type KriteriaCreateWithoutMatriksInput = {
   nama: string
   tipe: string
   bobot: number
+  aktif?: boolean
+  isSystem?: boolean
+  isDropdown?: boolean
+  options?: string | null
+  sessionId?: string | null
 }
 
 export type KriteriaUncheckedCreateWithoutMatriksInput = {
@@ -411,6 +518,11 @@ export type KriteriaUncheckedCreateWithoutMatriksInput = {
   nama: string
   tipe: string
   bobot: number
+  aktif?: boolean
+  isSystem?: boolean
+  isDropdown?: boolean
+  options?: string | null
+  sessionId?: string | null
 }
 
 export type KriteriaCreateOrConnectWithoutMatriksInput = {
@@ -434,6 +546,11 @@ export type KriteriaUpdateWithoutMatriksInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   tipe?: Prisma.StringFieldUpdateOperationsInput | string
   bobot?: Prisma.FloatFieldUpdateOperationsInput | number
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDropdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  options?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type KriteriaUncheckedUpdateWithoutMatriksInput = {
@@ -442,6 +559,11 @@ export type KriteriaUncheckedUpdateWithoutMatriksInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   tipe?: Prisma.StringFieldUpdateOperationsInput | string
   bobot?: Prisma.FloatFieldUpdateOperationsInput | number
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDropdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  options?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -481,6 +603,11 @@ export type KriteriaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   nama?: boolean
   tipe?: boolean
   bobot?: boolean
+  aktif?: boolean
+  isSystem?: boolean
+  isDropdown?: boolean
+  options?: boolean
+  sessionId?: boolean
   matriks?: boolean | Prisma.Kriteria$matriksArgs<ExtArgs>
   _count?: boolean | Prisma.KriteriaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["kriteria"]>
@@ -491,6 +618,11 @@ export type KriteriaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   nama?: boolean
   tipe?: boolean
   bobot?: boolean
+  aktif?: boolean
+  isSystem?: boolean
+  isDropdown?: boolean
+  options?: boolean
+  sessionId?: boolean
 }, ExtArgs["result"]["kriteria"]>
 
 export type KriteriaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -499,6 +631,11 @@ export type KriteriaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   nama?: boolean
   tipe?: boolean
   bobot?: boolean
+  aktif?: boolean
+  isSystem?: boolean
+  isDropdown?: boolean
+  options?: boolean
+  sessionId?: boolean
 }, ExtArgs["result"]["kriteria"]>
 
 export type KriteriaSelectScalar = {
@@ -507,9 +644,14 @@ export type KriteriaSelectScalar = {
   nama?: boolean
   tipe?: boolean
   bobot?: boolean
+  aktif?: boolean
+  isSystem?: boolean
+  isDropdown?: boolean
+  options?: boolean
+  sessionId?: boolean
 }
 
-export type KriteriaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kode" | "nama" | "tipe" | "bobot", ExtArgs["result"]["kriteria"]>
+export type KriteriaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kode" | "nama" | "tipe" | "bobot" | "aktif" | "isSystem" | "isDropdown" | "options" | "sessionId", ExtArgs["result"]["kriteria"]>
 export type KriteriaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   matriks?: boolean | Prisma.Kriteria$matriksArgs<ExtArgs>
   _count?: boolean | Prisma.KriteriaCountOutputTypeDefaultArgs<ExtArgs>
@@ -528,6 +670,11 @@ export type $KriteriaPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     nama: string
     tipe: string
     bobot: number
+    aktif: boolean
+    isSystem: boolean
+    isDropdown: boolean
+    options: string | null
+    sessionId: string | null
   }, ExtArgs["result"]["kriteria"]>
   composites: {}
 }
@@ -957,6 +1104,11 @@ export interface KriteriaFieldRefs {
   readonly nama: Prisma.FieldRef<"Kriteria", 'String'>
   readonly tipe: Prisma.FieldRef<"Kriteria", 'String'>
   readonly bobot: Prisma.FieldRef<"Kriteria", 'Float'>
+  readonly aktif: Prisma.FieldRef<"Kriteria", 'Boolean'>
+  readonly isSystem: Prisma.FieldRef<"Kriteria", 'Boolean'>
+  readonly isDropdown: Prisma.FieldRef<"Kriteria", 'Boolean'>
+  readonly options: Prisma.FieldRef<"Kriteria", 'String'>
+  readonly sessionId: Prisma.FieldRef<"Kriteria", 'String'>
 }
     
 

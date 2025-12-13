@@ -1,73 +1,118 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET() {
-  // 1. Ambil semua data yang dibutuhkan
-  const kriteria = await prisma.kriteria.findMany();
-  const alternatif = await prisma.alternatif.findMany({
-    include: { matriks: true } // Ambil sekalian nilai spek-nya
-  });
+export async function POST(request: Request) {
+  try {
+    const sessionId = request.headers.get("x-session-id");
+    
+    // Cegah crash jika body kosong
+    const body = await request.json().catch(() => ({})); 
+    const { customBobot } = body;
 
-  // Jika data kosong, balikin array kosong biar gak error
-  if (alternatif.length === 0) return NextResponse.json([]);
+    if (!sessionId) {
+      return NextResponse.json([], { status: 400 });
+    }
 
-  // 2. Cari Nilai MAX dan MIN untuk setiap Kriteria (Penting untuk rumus UTA)
-  // Kita buat object 'stats' untuk menyimpan Max/Min per kriteria
-  const stats: Record<number, { max: number; min: number }> = {};
-
-  kriteria.forEach((k) => {
-    // Ambil semua nilai untuk kriteria ini dari semua laptop
-    const values = alternatif.map((alt) => {
-      const mat = alt.matriks.find((m) => m.kriteriaId === k.id);
-      return mat ? mat.nilai : 0; // Kalau kosong anggap 0
+    // 1. Ambil Data Alternatif milik Session ini
+    const alternatif = await prisma.alternatif.findMany({
+      where: { sessionId: sessionId },
+      include: { matriks: true }
     });
 
-    stats[k.id] = {
-      max: Math.max(...values),
-      min: Math.min(...values)
-    };
-  });
+    if (alternatif.length === 0) {
+      return NextResponse.json([]);
+    }
 
-  // 3. Proses Perhitungan Utama (Looping setiap laptop)
-  const hasilRanking = alternatif.map((alt) => {
-    let nilaiPreferensi = 0;
-    const detailPerhitungan: any = {}; // Opsional: Buat debug/tampil detail
-
-    // Hitung skor per kriteria
-    kriteria.forEach((k) => {
-      const mat = alt.matriks.find((m) => m.kriteriaId === k.id);
-      const nilaiAsli = mat ? mat.nilai : 0;
-      
-      let nilaiNormalisasi = 0;
-      const { max, min } = stats[k.id];
-
-      // RUMUS UTA SESUAI BLUEPRINT
-      if (k.tipe === "benefit") {
-        // Benefit: Nilai / Max
-        nilaiNormalisasi = max === 0 ? 0 : nilaiAsli / max; 
-      } else {
-        // Cost: Min / Nilai
-        nilaiNormalisasi = nilaiAsli === 0 ? 0 : min / nilaiAsli;
+    // 2. Ambil SEMUA Kriteria yang tersedia (System + Custom milik user)
+    // JANGAN filter { aktif: true } di sini, karena status aktif sekarang diatur Frontend.
+    const allKriteria = await prisma.kriteria.findMany({
+      where: {
+        OR: [
+          { isSystem: true },
+          { sessionId: sessionId }
+        ]
       }
-
-      // Akumulasi Nilai Preferensi (Bobot * Normalisasi)
-      nilaiPreferensi += nilaiNormalisasi * k.bobot;
-      
-      // Simpan detail buat ditampilkan kalau mau (opsional)
-      detailPerhitungan[k.nama] = nilaiNormalisasi.toFixed(3);
     });
 
-    return {
-      id: alt.id,
-      nama: alt.nama,
-      detail: alt.detail,
-      skor: nilaiPreferensi, // Skor Akhir
-      rincian: detailPerhitungan
-    };
-  });
+    // 3. Tentukan Kriteria Mana yang Dipakai
+    let usedKriteria = [];
 
-  // 4. Urutkan dari Skor Tertinggi ke Terendah (Ranking)
-  hasilRanking.sort((a, b) => b.skor - a.skor);
+    if (customBobot && Array.isArray(customBobot) && customBobot.length > 0) {
+      // JIKA Frontend kirim bobot: Gunakan HANYA kriteria yang ada di list bobot tersebut.
+      // Ini otomatis memfilter kriteria yang dinonaktifkan di Frontend.
+      const activeIds = customBobot.map((cb: any) => cb.id);
+      
+      usedKriteria = allKriteria.filter(k => activeIds.includes(k.id)).map(k => {
+        const userPref = customBobot.find((cb: any) => cb.id === k.id);
+        return {
+          ...k,
+          bobot: userPref ? userPref.bobot : 0 // Pakai bobot normalisasi dari frontend
+        };
+      });
+    } else {
+      // FALLBACK: Jika tidak ada data dari frontend, baru pakai default DB
+      usedKriteria = allKriteria.filter(k => k.aktif).map(k => ({
+        ...k,
+        bobot: k.bobot
+      }));
+    }
 
-  return NextResponse.json(hasilRanking);
+    // 4. Perhitungan Statistik (Min/Max)
+    const stats: Record<number, { max: number; min: number }> = {};
+
+    usedKriteria.forEach((k) => {
+      const values = alternatif.map((alt) => {
+        const mat = alt.matriks.find((m) => m.kriteriaId === k.id);
+        return mat ? mat.nilai : 0;
+      });
+      
+      stats[k.id] = {
+        max: values.length ? Math.max(...values) : 0,
+        min: values.length ? Math.min(...values) : 0
+      };
+    });
+
+    // 5. Hitung Skor Akhir
+    const hasilRanking = alternatif.map((alt) => {
+      let nilaiPreferensi = 0;
+      const detailPerhitungan: any = {};
+
+      usedKriteria.forEach((k) => {
+        const mat = alt.matriks.find((m) => m.kriteriaId === k.id);
+        const nilaiAsli = mat ? mat.nilai : 0;
+        
+        let nilaiNormalisasi = 0;
+        const { max, min } = stats[k.id];
+
+        // Rumus Normalisasi UTA
+        if (k.tipe === "benefit") {
+          nilaiNormalisasi = max === 0 ? 0 : nilaiAsli / max; 
+        } else {
+          nilaiNormalisasi = nilaiAsli === 0 ? 0 : min / nilaiAsli;
+        }
+
+        nilaiPreferensi += nilaiNormalisasi * k.bobot;
+        
+        // Simpan rincian agar bisa dipakai di Grafik
+        detailPerhitungan[k.nama] = nilaiNormalisasi.toFixed(3);
+      });
+
+      return {
+        id: alt.id,
+        nama: alt.nama,
+        detail: alt.detail,
+        skor: nilaiPreferensi,
+        rincian: detailPerhitungan
+      };
+    });
+
+    // Sort Descending
+    hasilRanking.sort((a, b) => b.skor - a.skor);
+
+    return NextResponse.json(hasilRanking);
+
+  } catch (error) {
+    console.error("API Hitung Error:", error);
+    return NextResponse.json({ error: "Gagal menghitung" }, { status: 500 });
+  }
 }

@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.1.0",
   "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\n// Model Kriteria: Definisi parameter penilaian\nmodel Kriteria {\n  id    Int    @id @default(autoincrement())\n  kode  String @unique // Contoh: \"C1\", \"C2\", atau \"RAM\"\n  nama  String // Contoh: \"Kapasitas RAM\"\n  tipe  String // \"benefit\" atau \"cost\" [cite: 5]\n  bobot Float // Nilai prioritas (total harus 1 jika dinormalisasi)\n\n  // Relasi: Satu kriteria punya banyak nilai di tabel matriks\n  matriks Matriks[]\n}\n\n// Model Alternatif: Data Laptop\nmodel Alternatif {\n  id        Int      @id @default(autoincrement())\n  nama      String // Contoh: \"Asus TUF F15\"\n  detail    String? // Deskripsi tambahan (opsional)\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // Relasi: Satu laptop punya banyak nilai matriks (satu per kriteria)\n  matriks Matriks[]\n}\n\n// Model Matriks: Jembatan penghubung nilai\n// User TIDAK akan mengisi tabel ini secara manual. \n// Sistem akan mengisinya otomatis saat Laptop dibuat.\nmodel Matriks {\n  id    Int   @id @default(autoincrement())\n  nilai Float // Angka hasil konversi (misal RAM 8GB -> nilai 8)\n\n  alternatifId Int\n  alternatif   Alternatif @relation(fields: [alternatifId], references: [id], onDelete: Cascade)\n\n  kriteriaId Int\n  kriteria   Kriteria @relation(fields: [kriteriaId], references: [id])\n\n  @@unique([alternatifId, kriteriaId]) // Mencegah duplikasi nilai kriteria yg sama pada 1 laptop\n}\n",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Alternatif {\n  id        Int      @id @default(autoincrement())\n  nama      String\n  detail    String?\n  createdAt DateTime @default(now())\n\n  // PENGGANTI USER ID: Session ID (dari Cookie browser)\n  sessionId String @db.VarChar(255)\n\n  matriks Matriks[]\n\n  // Index biar query cepat saat filter session\n  @@index([sessionId])\n}\n\n// Model Kriteria: Definisi parameter penilaian\nmodel Kriteria {\n  id         Int     @id @default(autoincrement())\n  kode       String  @unique\n  nama       String\n  tipe       String\n  bobot      Float // Ini bobot default saja\n  aktif      Boolean @default(true) // HANYA SEBAGAI DEFAULT. Status real ada di LocalStorage\n  isSystem   Boolean @default(false)\n  isDropdown Boolean @default(false)\n  options    String?\n\n  // FIELD BARU: Agar kriteria custom tidak muncul di user lain\n  sessionId String?\n\n  matriks Matriks[]\n}\n\nmodel Matriks {\n  id    Int   @id @default(autoincrement())\n  nilai Float\n\n  alternatifId Int\n  alternatif   Alternatif @relation(fields: [alternatifId], references: [id], onDelete: Cascade)\n\n  kriteriaId Int\n  kriteria   Kriteria @relation(fields: [kriteriaId], references: [id], onDelete: Cascade)\n\n  @@unique([alternatifId, kriteriaId])\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Kriteria\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"kode\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"nama\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tipe\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bobot\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"matriks\",\"kind\":\"object\",\"type\":\"Matriks\",\"relationName\":\"KriteriaToMatriks\"}],\"dbName\":null},\"Alternatif\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nama\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"detail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"matriks\",\"kind\":\"object\",\"type\":\"Matriks\",\"relationName\":\"AlternatifToMatriks\"}],\"dbName\":null},\"Matriks\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nilai\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"alternatifId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"alternatif\",\"kind\":\"object\",\"type\":\"Alternatif\",\"relationName\":\"AlternatifToMatriks\"},{\"name\":\"kriteriaId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"kriteria\",\"kind\":\"object\",\"type\":\"Kriteria\",\"relationName\":\"KriteriaToMatriks\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Alternatif\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nama\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"detail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"sessionId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"matriks\",\"kind\":\"object\",\"type\":\"Matriks\",\"relationName\":\"AlternatifToMatriks\"}],\"dbName\":null},\"Kriteria\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"kode\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"nama\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tipe\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bobot\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"aktif\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"isSystem\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"isDropdown\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"options\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sessionId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"matriks\",\"kind\":\"object\",\"type\":\"Matriks\",\"relationName\":\"KriteriaToMatriks\"}],\"dbName\":null},\"Matriks\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nilai\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"alternatifId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"alternatif\",\"kind\":\"object\",\"type\":\"Alternatif\",\"relationName\":\"AlternatifToMatriks\"},{\"name\":\"kriteriaId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"kriteria\",\"kind\":\"object\",\"type\":\"Kriteria\",\"relationName\":\"KriteriaToMatriks\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -58,8 +58,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Kriterias
-   * const kriterias = await prisma.kriteria.findMany()
+   * // Fetch zero or more Alternatifs
+   * const alternatifs = await prisma.alternatif.findMany()
    * ```
    * 
    * Read more in our [docs](https://pris.ly/d/client).
@@ -80,8 +80,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Kriterias
- * const kriterias = await prisma.kriteria.findMany()
+ * // Fetch zero or more Alternatifs
+ * const alternatifs = await prisma.alternatif.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -175,16 +175,6 @@ export interface PrismaClient<
   }>>
 
       /**
-   * `prisma.kriteria`: Exposes CRUD operations for the **Kriteria** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Kriterias
-    * const kriterias = await prisma.kriteria.findMany()
-    * ```
-    */
-  get kriteria(): Prisma.KriteriaDelegate<ExtArgs, { omit: OmitOpts }>;
-
-  /**
    * `prisma.alternatif`: Exposes CRUD operations for the **Alternatif** model.
     * Example usage:
     * ```ts
@@ -193,6 +183,16 @@ export interface PrismaClient<
     * ```
     */
   get alternatif(): Prisma.AlternatifDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.kriteria`: Exposes CRUD operations for the **Kriteria** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Kriterias
+    * const kriterias = await prisma.kriteria.findMany()
+    * ```
+    */
+  get kriteria(): Prisma.KriteriaDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
    * `prisma.matriks`: Exposes CRUD operations for the **Matriks** model.

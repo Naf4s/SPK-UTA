@@ -1,69 +1,3 @@
-// import BobotPrioritas from "@/components/BobotPrioritas";
-// import FormLaptop from "@/components/FormLaptop";
-// import HasilRanking from "@/components/HasilRanking";
-// import GrafikPerbandingan from "@/components/GrafikPerbandingan";
-// import DashboardSummary from "@/components/DashboardSummary";
-
-// export default function Home() {
-//   return (
-//     <main className="min-h-screen bg-gray-50 p-8">
-//       <div className="max-w-6xl mx-auto space-y-8">
-        
-//         <header className="mb-8 text-center pt-8">
-//           <div className="inline-block p-3 rounded-full bg-blue-100 mb-4">
-//             <span className="text-4xl">⚖️</span>
-//           </div>
-//           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-2">
-//             SPK Pemilihan Laptop
-//           </h1>
-//           <p className="text-gray-500 text-lg">
-//             Sistem Pendukung Keputusan Cerdas dengan Metode UTA
-//           </p>
-//         </header>
-
-// <DashboardSummary />
-
-//         {/* Layout Grid: Kiri (Input & Bobot) - Kanan (Hasil & Grafik) */}
-//         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          
-//           {/* KOLOM KIRI: Area Kerja User (Input) */}
-//           <div className="lg:col-span-5 space-y-6">
-//             <BobotPrioritas />
-//             <FormLaptop />
-//           </div>
-
-//           {/* KOLOM KANAN: Area Visualisasi (Output) */}
-//           <div className="lg:col-span-7 space-y-6">
-//             <GrafikPerbandingan />
-//             <HasilRanking />
-//           </div>
-
-//         </div>
-
-//         {/* 1. Modul Pengaturan Prioritas */}
-//         <section>
-//           <BobotPrioritas />
-//         </section>
-
-//         {/* 2. Modul Input Data */}
-//         <section>
-//           <FormLaptop />
-//         </section>
-
-//         {/* 3. Grafik Analisis (Baru) */}
-//         <section>
-//           <GrafikPerbandingan />
-//         </section>
-
-//         {/* 4. Hasil Perhitungan (Baru) */}
-//         <section>
-//           <HasilRanking />
-//         </section>
-
-//       </div>
-//     </main>
-//   );
-// }
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -120,7 +54,7 @@ export default function LandingPage() {
       </div>
 
       <footer className="mt-20 text-gray-400 text-sm">
-        © 2025 SPK UTA. Created with ❤️ Next.js & Shadcn/ui.
+        © 2025 SPK UTA. Created with ❤️.
       </footer>
     </div>
   );

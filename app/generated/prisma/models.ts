@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Kriteria'
 export type * from './models/Alternatif'
+export type * from './models/Kriteria'
 export type * from './models/Matriks'
 export type * from './commonInputTypes'

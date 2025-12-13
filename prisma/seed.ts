@@ -9,17 +9,21 @@ async function main() {
   await prisma.kriteria.deleteMany()
 
   // Data Kriteria sesuai Blueprint [cite: 6-15]
-  const kriteriaData = [
-    { kode: "C1", nama: "Harga (Juta)", tipe: "cost", bobot: 0.25 },
-    { kode: "C2", nama: "RAM (GB)", tipe: "benefit", bobot: 0.20 },
-    { kode: "C3", nama: "SSD (GB)", tipe: "benefit", bobot: 0.15 },
-    { kode: "C4", nama: "Baterai (Jam)", tipe: "benefit", bobot: 0.10 },
-    { kode: "C5", nama: "Berat (Kg)", tipe: "cost", bobot: 0.10 },
-    { kode: "C6", nama: "Skor Performa (Benchmark)", tipe: "benefit", bobot: 0.20 },
+const kriteriaLibrary = [
+    // Kriteria Default (Aktif)
+    { kode: "C1", nama: "Harga (Juta)", tipe: "cost", bobot: 0.25, aktif: true, isSystem: true},
+    { kode: "C2", nama: "RAM (GB)", tipe: "benefit", bobot: 0.20, aktif: true, isSystem: true },
+    { kode: "C3", nama: "SSD (GB)", tipe: "benefit", bobot: 0.15, aktif: true, isSystem: true },
+    
+    { kode: "C4", nama: "VGA / GPU (Skor)", tipe: "benefit", bobot: 0.10, aktif: false, isSystem: true },
+    { kode: "C5", nama: "Refresh Rate (Hz)", tipe: "benefit", bobot: 0.10, aktif: false, isSystem: true },
+    { kode: "C6", nama: "Berat (Kg)", tipe: "cost", bobot: 0.10, aktif: false, isSystem: true },
+    { kode: "C7", nama: "Ukuran Layar (Inch)", tipe: "benefit", bobot: 0.10, aktif: false, isSystem: true },
+    { kode: "C8", nama: "Garansi (Tahun)", tipe: "benefit", bobot: 0.10, aktif: false, isSystem: true },
+    { kode: "C9", nama: "Daya Tahan Baterai (Jam)", tipe: "benefit", bobot: 0.10, aktif: false, isSystem: true},
   ]
-
   console.log('Mulai seeding kriteria...')
-  for (const k of kriteriaData) {
+  for (const k of kriteriaLibrary) {
     await prisma.kriteria.create({
       data: k
     })

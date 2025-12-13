@@ -51,8 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Kriteria: 'Kriteria',
   Alternatif: 'Alternatif',
+  Kriteria: 'Kriteria',
   Matriks: 'Matriks'
 } as const
 
@@ -72,26 +72,31 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const KriteriaScalarFieldEnum = {
-  id: 'id',
-  kode: 'kode',
-  nama: 'nama',
-  tipe: 'tipe',
-  bobot: 'bobot'
-} as const
-
-export type KriteriaScalarFieldEnum = (typeof KriteriaScalarFieldEnum)[keyof typeof KriteriaScalarFieldEnum]
-
-
 export const AlternatifScalarFieldEnum = {
   id: 'id',
   nama: 'nama',
   detail: 'detail',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  sessionId: 'sessionId'
 } as const
 
 export type AlternatifScalarFieldEnum = (typeof AlternatifScalarFieldEnum)[keyof typeof AlternatifScalarFieldEnum]
+
+
+export const KriteriaScalarFieldEnum = {
+  id: 'id',
+  kode: 'kode',
+  nama: 'nama',
+  tipe: 'tipe',
+  bobot: 'bobot',
+  aktif: 'aktif',
+  isSystem: 'isSystem',
+  isDropdown: 'isDropdown',
+  options: 'options',
+  sessionId: 'sessionId'
+} as const
+
+export type KriteriaScalarFieldEnum = (typeof KriteriaScalarFieldEnum)[keyof typeof KriteriaScalarFieldEnum]
 
 
 export const MatriksScalarFieldEnum = {

@@ -39,7 +39,7 @@ export type AlternatifMinAggregateOutputType = {
   nama: string | null
   detail: string | null
   createdAt: Date | null
-  updatedAt: Date | null
+  sessionId: string | null
 }
 
 export type AlternatifMaxAggregateOutputType = {
@@ -47,7 +47,7 @@ export type AlternatifMaxAggregateOutputType = {
   nama: string | null
   detail: string | null
   createdAt: Date | null
-  updatedAt: Date | null
+  sessionId: string | null
 }
 
 export type AlternatifCountAggregateOutputType = {
@@ -55,7 +55,7 @@ export type AlternatifCountAggregateOutputType = {
   nama: number
   detail: number
   createdAt: number
-  updatedAt: number
+  sessionId: number
   _all: number
 }
 
@@ -73,7 +73,7 @@ export type AlternatifMinAggregateInputType = {
   nama?: true
   detail?: true
   createdAt?: true
-  updatedAt?: true
+  sessionId?: true
 }
 
 export type AlternatifMaxAggregateInputType = {
@@ -81,7 +81,7 @@ export type AlternatifMaxAggregateInputType = {
   nama?: true
   detail?: true
   createdAt?: true
-  updatedAt?: true
+  sessionId?: true
 }
 
 export type AlternatifCountAggregateInputType = {
@@ -89,7 +89,7 @@ export type AlternatifCountAggregateInputType = {
   nama?: true
   detail?: true
   createdAt?: true
-  updatedAt?: true
+  sessionId?: true
   _all?: true
 }
 
@@ -184,7 +184,7 @@ export type AlternatifGroupByOutputType = {
   nama: string
   detail: string | null
   createdAt: Date
-  updatedAt: Date
+  sessionId: string
   _count: AlternatifCountAggregateOutputType | null
   _avg: AlternatifAvgAggregateOutputType | null
   _sum: AlternatifSumAggregateOutputType | null
@@ -215,7 +215,7 @@ export type AlternatifWhereInput = {
   nama?: Prisma.StringFilter<"Alternatif"> | string
   detail?: Prisma.StringNullableFilter<"Alternatif"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Alternatif"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Alternatif"> | Date | string
+  sessionId?: Prisma.StringFilter<"Alternatif"> | string
   matriks?: Prisma.MatriksListRelationFilter
 }
 
@@ -224,7 +224,7 @@ export type AlternatifOrderByWithRelationInput = {
   nama?: Prisma.SortOrder
   detail?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
   matriks?: Prisma.MatriksOrderByRelationAggregateInput
 }
 
@@ -236,7 +236,7 @@ export type AlternatifWhereUniqueInput = Prisma.AtLeast<{
   nama?: Prisma.StringFilter<"Alternatif"> | string
   detail?: Prisma.StringNullableFilter<"Alternatif"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Alternatif"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Alternatif"> | Date | string
+  sessionId?: Prisma.StringFilter<"Alternatif"> | string
   matriks?: Prisma.MatriksListRelationFilter
 }, "id">
 
@@ -245,7 +245,7 @@ export type AlternatifOrderByWithAggregationInput = {
   nama?: Prisma.SortOrder
   detail?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
   _count?: Prisma.AlternatifCountOrderByAggregateInput
   _avg?: Prisma.AlternatifAvgOrderByAggregateInput
   _max?: Prisma.AlternatifMaxOrderByAggregateInput
@@ -261,14 +261,14 @@ export type AlternatifScalarWhereWithAggregatesInput = {
   nama?: Prisma.StringWithAggregatesFilter<"Alternatif"> | string
   detail?: Prisma.StringNullableWithAggregatesFilter<"Alternatif"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Alternatif"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Alternatif"> | Date | string
+  sessionId?: Prisma.StringWithAggregatesFilter<"Alternatif"> | string
 }
 
 export type AlternatifCreateInput = {
   nama: string
   detail?: string | null
   createdAt?: Date | string
-  updatedAt?: Date | string
+  sessionId: string
   matriks?: Prisma.MatriksCreateNestedManyWithoutAlternatifInput
 }
 
@@ -277,7 +277,7 @@ export type AlternatifUncheckedCreateInput = {
   nama: string
   detail?: string | null
   createdAt?: Date | string
-  updatedAt?: Date | string
+  sessionId: string
   matriks?: Prisma.MatriksUncheckedCreateNestedManyWithoutAlternatifInput
 }
 
@@ -285,7 +285,7 @@ export type AlternatifUpdateInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
   matriks?: Prisma.MatriksUpdateManyWithoutAlternatifNestedInput
 }
 
@@ -294,7 +294,7 @@ export type AlternatifUncheckedUpdateInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
   matriks?: Prisma.MatriksUncheckedUpdateManyWithoutAlternatifNestedInput
 }
 
@@ -303,14 +303,14 @@ export type AlternatifCreateManyInput = {
   nama: string
   detail?: string | null
   createdAt?: Date | string
-  updatedAt?: Date | string
+  sessionId: string
 }
 
 export type AlternatifUpdateManyMutationInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AlternatifUncheckedUpdateManyInput = {
@@ -318,7 +318,7 @@ export type AlternatifUncheckedUpdateManyInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AlternatifCountOrderByAggregateInput = {
@@ -326,7 +326,7 @@ export type AlternatifCountOrderByAggregateInput = {
   nama?: Prisma.SortOrder
   detail?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
 }
 
 export type AlternatifAvgOrderByAggregateInput = {
@@ -338,7 +338,7 @@ export type AlternatifMaxOrderByAggregateInput = {
   nama?: Prisma.SortOrder
   detail?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
 }
 
 export type AlternatifMinOrderByAggregateInput = {
@@ -346,7 +346,7 @@ export type AlternatifMinOrderByAggregateInput = {
   nama?: Prisma.SortOrder
   detail?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
 }
 
 export type AlternatifSumOrderByAggregateInput = {
@@ -358,12 +358,24 @@ export type AlternatifScalarRelationFilter = {
   isNot?: Prisma.AlternatifWhereInput
 }
 
+export type StringFieldUpdateOperationsInput = {
+  set?: string
+}
+
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type AlternatifCreateNestedOneWithoutMatriksInput = {
@@ -384,7 +396,7 @@ export type AlternatifCreateWithoutMatriksInput = {
   nama: string
   detail?: string | null
   createdAt?: Date | string
-  updatedAt?: Date | string
+  sessionId: string
 }
 
 export type AlternatifUncheckedCreateWithoutMatriksInput = {
@@ -392,7 +404,7 @@ export type AlternatifUncheckedCreateWithoutMatriksInput = {
   nama: string
   detail?: string | null
   createdAt?: Date | string
-  updatedAt?: Date | string
+  sessionId: string
 }
 
 export type AlternatifCreateOrConnectWithoutMatriksInput = {
@@ -415,7 +427,7 @@ export type AlternatifUpdateWithoutMatriksInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AlternatifUncheckedUpdateWithoutMatriksInput = {
@@ -423,7 +435,7 @@ export type AlternatifUncheckedUpdateWithoutMatriksInput = {
   nama?: Prisma.StringFieldUpdateOperationsInput | string
   detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -462,7 +474,7 @@ export type AlternatifSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   nama?: boolean
   detail?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
+  sessionId?: boolean
   matriks?: boolean | Prisma.Alternatif$matriksArgs<ExtArgs>
   _count?: boolean | Prisma.AlternatifCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["alternatif"]>
@@ -472,7 +484,7 @@ export type AlternatifSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   nama?: boolean
   detail?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
+  sessionId?: boolean
 }, ExtArgs["result"]["alternatif"]>
 
 export type AlternatifSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -480,7 +492,7 @@ export type AlternatifSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   nama?: boolean
   detail?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
+  sessionId?: boolean
 }, ExtArgs["result"]["alternatif"]>
 
 export type AlternatifSelectScalar = {
@@ -488,10 +500,10 @@ export type AlternatifSelectScalar = {
   nama?: boolean
   detail?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
+  sessionId?: boolean
 }
 
-export type AlternatifOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nama" | "detail" | "createdAt" | "updatedAt", ExtArgs["result"]["alternatif"]>
+export type AlternatifOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nama" | "detail" | "createdAt" | "sessionId", ExtArgs["result"]["alternatif"]>
 export type AlternatifInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   matriks?: boolean | Prisma.Alternatif$matriksArgs<ExtArgs>
   _count?: boolean | Prisma.AlternatifCountOutputTypeDefaultArgs<ExtArgs>
@@ -509,7 +521,7 @@ export type $AlternatifPayload<ExtArgs extends runtime.Types.Extensions.Internal
     nama: string
     detail: string | null
     createdAt: Date
-    updatedAt: Date
+    sessionId: string
   }, ExtArgs["result"]["alternatif"]>
   composites: {}
 }
@@ -938,7 +950,7 @@ export interface AlternatifFieldRefs {
   readonly nama: Prisma.FieldRef<"Alternatif", 'String'>
   readonly detail: Prisma.FieldRef<"Alternatif", 'String'>
   readonly createdAt: Prisma.FieldRef<"Alternatif", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"Alternatif", 'DateTime'>
+  readonly sessionId: Prisma.FieldRef<"Alternatif", 'String'>
 }
     
 

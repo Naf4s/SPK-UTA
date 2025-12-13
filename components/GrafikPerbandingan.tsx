@@ -12,52 +12,118 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+import { useSessionID } from "@/hooks/useSessionID";
 
 export default function GrafikPerbandingan() {
+  const sessionId = useSessionID();
   const [dataChart, setDataChart] = useState<any[]>([]);
   const [laptops, setLaptops] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch("/api/hitung")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.length === 0) {
-          setLoading(false);
-          return;
-        }
+  const fetchData = async () => {
+    if (!sessionId) return;
+    setLoading(true);
 
-        // 1. Ambil Top 3 Laptop saja biar grafik gak pusing
-        const top3 = data.slice(0, 3);
-        setLaptops(top3.map((l: any) => l.nama));
+    try {
+      // 1. Ambil Data Kriteria
+      const resKriteria = await fetch("/api/kriteria", {
+        headers: { "x-session-id": sessionId }
+      });
+      const dbKriteria = await resKriteria.json();
 
-        // 2. Transformasi Data untuk Recharts
-        // Kita butuh format: [{ subject: 'RAM', A: 100, B: 80 }, { subject: 'Harga', ... }]
-        
-        // Ambil daftar kriteria dari laptop pertama
-        const kriteriaKeys = Object.keys(top3[0].rincian);
-        
-        const chartData = kriteriaKeys.map((key) => {
-          const obj: any = { subject: key };
-          
-          top3.forEach((laptop: any, index: number) => {
-            // Nilai rincian dari backend adalah 0-1 (normalized).
-            // Kita kali 100 biar jadi skala 0-100 di grafik.
-            const nilai = parseFloat(laptop.rincian[key]) * 100;
-            
-            // Simpan dengan key dinamis (laptop1, laptop2, laptop3)
-            obj[`laptop${index}`] = Math.round(nilai); 
-            obj[`namaLaptop${index}`] = laptop.nama;
-          });
-          
-          return obj;
-        });
+      // 2. Cek Config Aktif/Non-Aktif di LocalStorage
+      const savedConfig = localStorage.getItem("spk_active_config");
+      const config = savedConfig ? JSON.parse(savedConfig) : {};
+      
+      // Filter Kriteria yang AKTIF saja
+      const activeKriteria = dbKriteria.filter((k: any) => 
+        config[k.id] !== undefined ? config[k.id] : true
+      );
 
-        setDataChart(chartData);
+      // Buat daftar Nama Kriteria Aktif untuk filter grafik nanti
+      const activeKriteriaNames = activeKriteria.map((k: any) => k.nama);
+
+      // 3. Hitung Bobot Custom (Sama seperti HasilRanking)
+      const savedPref = localStorage.getItem("spk_user_pref");
+      const parsedPref = savedPref ? JSON.parse(savedPref) : {};
+
+      const rawWeights = activeKriteria.map((k: any) => ({
+        id: k.id,
+        val: parsedPref[k.id] || 5 
+      }));
+
+      const totalScore = rawWeights.reduce((a: number, b: any) => a + b.val, 0);
+      const customBobot = rawWeights.map((w: any) => ({
+        id: w.id,
+        bobot: totalScore === 0 ? 0 : w.val / totalScore 
+      }));
+
+      // 4. Panggil API Hitung
+      const res = await fetch("/api/hitung", {
+        method: "POST",
+        headers: { 
+            "Content-Type": "application/json",
+            "x-session-id": sessionId 
+        },
+        body: JSON.stringify({ customBobot }) 
+      });
+
+      const textRes = await res.text();
+      const data = textRes ? JSON.parse(textRes) : [];
+
+      if (data.length === 0) {
+        setDataChart([]);
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+        return;
+      }
+
+      // 5. Transformasi Data Grafik
+      const top3 = data.slice(0, 3);
+      setLaptops(top3.map((l: any) => l.nama));
+
+      // Ambil semua key (nama kriteria) dari data rincian backend
+      const rawKeys = top3[0]?.rincian ? Object.keys(top3[0].rincian) : [];
+      
+      // --- PERBAIKAN DI SINI ---
+      // Filter key: Hanya ambil key yang namanya ada di daftar activeKriteriaNames
+      const filteredKeys = rawKeys.filter((key) => activeKriteriaNames.includes(key));
+      
+      const chartData = filteredKeys.map((key) => {
+        const obj: any = { subject: key };
+        
+        top3.forEach((laptop: any, index: number) => {
+          const nilai = parseFloat(laptop.rincian[key]) * 100;
+          obj[`laptop${index}`] = Math.round(nilai); 
+          obj[`namaLaptop${index}`] = laptop.nama;
+        });
+        
+        return obj;
+      });
+
+      setDataChart(chartData);
+    } catch (error) {
+      console.error("Gagal load grafik", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId]);
+
+  // Listener Update Realtime
+  useEffect(() => {
+    const handleUpdate = () => fetchData();
+    window.addEventListener("bobot-updated", handleUpdate);
+    window.addEventListener("kriteria-config-updated", handleUpdate);
+    return () => {
+        window.removeEventListener("bobot-updated", handleUpdate);
+        window.removeEventListener("kriteria-config-updated", handleUpdate);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId]);
 
   if (loading) return (
     <div className="flex justify-center p-8">
@@ -65,14 +131,14 @@ export default function GrafikPerbandingan() {
     </div>
   );
 
-  if (dataChart.length === 0) return null; // Jangan tampilkan apa-apa kalau belum ada data
+  if (dataChart.length === 0) return null;
 
   return (
     <Card className="mt-8 shadow-lg border-t-4 border-t-orange-500">
       <CardHeader>
         <CardTitle>📊 Analisis Perbandingan (Top 3)</CardTitle>
         <p className="text-sm text-gray-500">
-          Membandingkan kekuatan spesifikasi antara kandidat juara. Skala 0-100 (Normalisasi).
+          Membandingkan kekuatan spesifikasi antara kandidat juara. Skala 0-100.
         </p>
       </CardHeader>
       <CardContent className="h-[400px] w-full">
@@ -82,35 +148,30 @@ export default function GrafikPerbandingan() {
             <PolarAngleAxis dataKey="subject" tick={{ fill: '#666', fontSize: 12 }} />
             <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} />
             
-            {/* Laptop Juara 1 (Biru) */}
             {laptops[0] && (
               <Radar
                 name={`#1 ${laptops[0]}`}
                 dataKey="laptop0"
-                stroke="#2563eb" // Blue 600
-                fill="#3b82f6"   // Blue 500
+                stroke="#2563eb"
+                fill="#3b82f6"
                 fillOpacity={0.5}
               />
             )}
-
-            {/* Laptop Juara 2 (Hijau) */}
             {laptops[1] && (
               <Radar
                 name={`#2 ${laptops[1]}`}
                 dataKey="laptop1"
-                stroke="#16a34a" // Green 600
-                fill="#22c55e"   // Green 500
+                stroke="#16a34a"
+                fill="#22c55e"
                 fillOpacity={0.3}
               />
             )}
-
-            {/* Laptop Juara 3 (Merah/Orange) */}
             {laptops[2] && (
               <Radar
                 name={`#3 ${laptops[2]}`}
                 dataKey="laptop2"
-                stroke="#ea580c" // Orange 600
-                fill="#f97316"   // Orange 500
+                stroke="#ea580c"
+                fill="#f97316"
                 fillOpacity={0.2}
               />
             )}

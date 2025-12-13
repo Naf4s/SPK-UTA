@@ -13,42 +13,47 @@ datasource db {
   provider = "postgresql"
 }
 
-// Model Kriteria: Definisi parameter penilaian
-model Kriteria {
-  id        Int       @id @default(autoincrement())
-  kode      String    @unique // Contoh: "C1", "C2", atau "RAM"
-  nama      String    // Contoh: "Kapasitas RAM"
-  tipe      String    // "benefit" atau "cost" [cite: 5]
-  bobot     Float     // Nilai prioritas (total harus 1 jika dinormalisasi)
-  
-  // Relasi: Satu kriteria punya banyak nilai di tabel matriks
-  matriks   Matriks[] 
-}
-
-// Model Alternatif: Data Laptop
 model Alternatif {
   id        Int       @id @default(autoincrement())
-  nama      String    // Contoh: "Asus TUF F15"
-  detail    String?   // Deskripsi tambahan (opsional)
+  nama      String
+  detail    String?
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  // Relasi: Satu laptop punya banyak nilai matriks (satu per kriteria)
+  
+  // PENGGANTI USER ID: Session ID (dari Cookie browser)
+  sessionId String    @db.VarChar(255) 
+  
   matriks   Matriks[]
+  
+  // Index biar query cepat saat filter session
+  @@index([sessionId])
+}
+// Model Kriteria: Definisi parameter penilaian
+model Kriteria {
+  id          Int       @id @default(autoincrement())
+  kode        String    @unique
+  nama        String
+  tipe        String
+  bobot       Float     // Ini bobot default saja
+  aktif       Boolean   @default(true) // HANYA SEBAGAI DEFAULT. Status real ada di LocalStorage
+  isSystem    Boolean   @default(false)
+  isDropdown  Boolean   @default(false)
+  options     String?
+  
+  // FIELD BARU: Agar kriteria custom tidak muncul di user lain
+  sessionId   String?   
+
+  matriks     Matriks[]
 }
 
-// Model Matriks: Jembatan penghubung nilai
-// User TIDAK akan mengisi tabel ini secara manual. 
-// Sistem akan mengisinya otomatis saat Laptop dibuat.
 model Matriks {
   id           Int        @id @default(autoincrement())
-  nilai        Float      // Angka hasil konversi (misal RAM 8GB -> nilai 8)
+  nilai        Float
   
   alternatifId Int
   alternatif   Alternatif @relation(fields: [alternatifId], references: [id], onDelete: Cascade)
   
   kriteriaId   Int
-  kriteria     Kriteria   @relation(fields: [kriteriaId], references: [id])
+  kriteria     Kriteria   @relation(fields: [kriteriaId], references: [id], onDelete: Cascade)
 
-  @@unique([alternatifId, kriteriaId]) // Mencegah duplikasi nilai kriteria yg sama pada 1 laptop
+  @@unique([alternatifId, kriteriaId])
 }

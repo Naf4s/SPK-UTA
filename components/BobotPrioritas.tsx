@@ -2,141 +2,141 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
+import { SlidersHorizontal, RotateCcw } from "lucide-react"; // Ikon baru
 import { Button } from "@/components/ui/button";
-import { Save, AlertTriangle } from "lucide-react"; // Ikon
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { useSessionID } from "@/hooks/useSessionID";
 
 type Kriteria = {
   id: number;
   nama: string;
   kode: string;
   tipe: string;
-  bobot: number;
-  rawValue?: number;
+  bobot: number; // Bobot default dari DB
+  rawValue?: number; // Nilai slider user (1-10)
 };
 
 export default function BobotPrioritas() {
   const [kriteria, setKriteria] = useState<Kriteria[]>([]);
-  const router = useRouter();
-
-  useEffect(() => {
-    fetch("/api/kriteria")
-      .then((res) => res.json())
-      .then((data) => {
-        const formatted = data.map((k: Kriteria) => ({
-          ...k,
-          rawValue: 5 // Default visual slider (tengah)
-        }));
-        setKriteria(formatted);
+  const sessionId = useSessionID();
+  
+  // 1. Load Data
+useEffect(() => {
+    const initData = async () => {
+      if (!sessionId) return; // Tunggu session
+      
+      const res = await fetch("/api/kriteria", { 
+          headers: { "x-session-id": sessionId } 
       });
-  }, []);
+      const dataDB = await res.json();
 
+      // 1. Filter mana yang AKTIF berdasarkan LocalStorage
+      const configStr = localStorage.getItem("spk_active_config");
+      const config = configStr ? JSON.parse(configStr) : {};
+      
+      // Defaultnya TRUE (Aktif) jika tidak ada di config
+      const activeCriteria = dataDB.filter((k: any) => 
+        config[k.id] !== undefined ? config[k.id] : true
+      );
+
+      // 2. Load Bobot Slider dari LocalStorage
+      const savedBobot = localStorage.getItem("spk_user_pref");
+      const parsedPref = savedBobot ? JSON.parse(savedBobot) : {};
+
+      const finalData = activeCriteria.map((k: any) => ({
+        ...k,
+        rawValue: parsedPref[k.id] || 5 
+      }));
+
+      setKriteria(finalData);
+    };
+    
+    // Listen juga event update biar sync
+    const handler = () => initData();
+    window.addEventListener("kriteria-config-updated", handler);
+
+    initData();
+    
+    return () => window.removeEventListener("kriteria-config-updated", handler);
+  }, [sessionId]);
+
+  // 2. Handle Perubahan Slider (Auto Save ke LocalStorage)
   const handleSliderChange = (id: number, val: number[]) => {
-    setKriteria((prev) =>
-      prev.map((k) => (k.id === id ? { ...k, rawValue: val[0] } : k))
+    const newValue = val[0];
+    
+    const updated = kriteria.map((k) => 
+      k.id === id ? { ...k, rawValue: newValue } : k
     );
+    setKriteria(updated);
+
+    // Simpan PREFERENSI MENTAH (Skala 1-10) ke LocalStorage
+    // Kita simpan object sederhana: { "1": 8, "2": 3 } biar hemat
+    const prefToSave = updated.reduce((acc, curr) => ({
+      ...acc,
+      [curr.id]: curr.rawValue
+    }), {});
+    
+    localStorage.setItem("spk_user_pref", JSON.stringify(prefToSave));
+    
+    // Dispatch event agar komponen lain (Grafik/Tabel) tahu ada perubahan bobot
+    window.dispatchEvent(new Event("bobot-updated"));
   };
 
-  const handleSave = async () => {
-    const totalSkor = kriteria.reduce((sum, k) => sum + (k.rawValue || 0), 0);
-    
-    // Normalisasi Bobot (Total jadi 1.0)
-    const payload = kriteria.map((k) => ({
-      id: k.id,
-      bobot: (k.rawValue || 0) / totalSkor
-    }));
-
-    try {
-      await fetch("/api/kriteria", {
-        method: "PUT",
-        body: JSON.stringify(payload),
-      });
-
-      toast.success("Prioritas disimpan!", {
-        description: "Ranking laptop akan dihitung ulang otomatis."
-      });
-      router.refresh(); 
-      // Kita bisa reload halaman agar komponen HasilRanking merespons perubahan
-      window.location.reload(); 
-    } catch (error) {
-      toast.error("Gagal menyimpan prioritas.");
-    }
+  // 3. Reset ke Default
+  const handleReset = () => {
+    const resetData = kriteria.map(k => ({ ...k, rawValue: 5 }));
+    setKriteria(resetData);
+    localStorage.removeItem("spk_user_pref");
+    window.dispatchEvent(new Event("bobot-updated"));
+    toast.info("Prioritas dikembalikan ke default");
   };
 
   return (
     <Card className="mb-8 border-l-4 border-l-purple-500 shadow-md">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          🎚️ Atur Prioritas Kebutuhan
-        </CardTitle>
-        <p className="text-sm text-gray-500">
-          Geser ke kanan (max 10) untuk kriteria yang paling penting bagimu.
-        </p>
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <div>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <SlidersHorizontal className="h-5 w-5 text-purple-600" />
+            Atur Prioritas Pribadi
+          </CardTitle>
+          <p className="text-sm text-gray-500 mt-1">
+            Geser slider. Perubahan tersimpan otomatis di browser Anda.
+          </p>
+        </div>
+        <Button variant="ghost" size="sm" onClick={handleReset} className="text-gray-400 hover:text-red-500">
+          <RotateCcw className="h-4 w-4 mr-1" /> Reset
+        </Button>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 pt-4">
         {kriteria.map((k) => (
           <div key={k.id} className="flex items-center gap-4">
-            <div className="w-1/4">
-              <p className="font-bold text-sm md:text-base">{k.nama}</p>
-              <span className="text-[10px] uppercase font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
-                {k.kode} • {k.tipe}
-              </span>
+            <div className="w-1/3 md:w-1/4">
+              <p className="font-bold text-sm">{k.nama}</p>
+              <div className="flex gap-1 mt-1">
+                <Badge variant="secondary" className="text-[10px] px-1 h-5">{k.kode}</Badge>
+                <span className="text-[10px] text-gray-400 bg-gray-100 px-1 rounded h-5 flex items-center">
+                  {k.tipe}
+                </span>
+              </div>
             </div>
             
             <Slider
-              defaultValue={[k.rawValue || 5]}
+              value={[k.rawValue || 5]}
               max={10}
               step={1}
               className="flex-1 cursor-pointer"
               onValueChange={(val) => handleSliderChange(k.id, val)}
             />
             
-            <div className="w-10 text-center font-bold text-purple-600 bg-purple-50 rounded p-1">
+            <div className={`w-12 text-center font-bold rounded p-1 text-sm ${
+              (k.rawValue || 0) >= 8 ? "text-purple-700 bg-purple-100" : 
+              (k.rawValue || 0) <= 3 ? "text-gray-400 bg-gray-50" : "text-gray-700 bg-gray-100"
+            }`}>
               {k.rawValue}
             </div>
           </div>
         ))}
-        
-        {/* ALERT DIALOG WRAPPER */}
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button className="w-full mt-4 bg-purple-600 hover:bg-purple-700">
-              <Save className="mr-2 h-4 w-4" /> Simpan Perubahan Prioritas
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-yellow-500" />
-                Konfirmasi Perubahan
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                Apakah Anda yakin dengan pengaturan prioritas ini? 
-                <br/><br/>
-                Sistem akan <strong>menghitung ulang seluruh skor</strong> rekomendasi laptop berdasarkan preferensi baru Anda.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Batal</AlertDialogCancel>
-              <AlertDialogAction onClick={handleSave} className="bg-purple-600 text-white">
-                Ya, Terapkan
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-
       </CardContent>
     </Card>
   );

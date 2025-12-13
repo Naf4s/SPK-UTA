@@ -29,8 +29,8 @@ export * from "./enums"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Kriterias
- * const kriterias = await prisma.kriteria.findMany()
+ * // Fetch zero or more Alternatifs
+ * const alternatifs = await prisma.alternatif.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -40,15 +40,15 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model Kriteria
- * 
- */
-export type Kriteria = Prisma.KriteriaModel
-/**
  * Model Alternatif
  * 
  */
 export type Alternatif = Prisma.AlternatifModel
+/**
+ * Model Kriteria
+ * 
+ */
+export type Kriteria = Prisma.KriteriaModel
 /**
  * Model Matriks
  * 

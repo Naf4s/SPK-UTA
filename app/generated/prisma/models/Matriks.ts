@@ -362,48 +362,6 @@ export type MatriksSumOrderByAggregateInput = {
   kriteriaId?: Prisma.SortOrder
 }
 
-export type MatriksCreateNestedManyWithoutKriteriaInput = {
-  create?: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput> | Prisma.MatriksCreateWithoutKriteriaInput[] | Prisma.MatriksUncheckedCreateWithoutKriteriaInput[]
-  connectOrCreate?: Prisma.MatriksCreateOrConnectWithoutKriteriaInput | Prisma.MatriksCreateOrConnectWithoutKriteriaInput[]
-  createMany?: Prisma.MatriksCreateManyKriteriaInputEnvelope
-  connect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
-}
-
-export type MatriksUncheckedCreateNestedManyWithoutKriteriaInput = {
-  create?: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput> | Prisma.MatriksCreateWithoutKriteriaInput[] | Prisma.MatriksUncheckedCreateWithoutKriteriaInput[]
-  connectOrCreate?: Prisma.MatriksCreateOrConnectWithoutKriteriaInput | Prisma.MatriksCreateOrConnectWithoutKriteriaInput[]
-  createMany?: Prisma.MatriksCreateManyKriteriaInputEnvelope
-  connect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
-}
-
-export type MatriksUpdateManyWithoutKriteriaNestedInput = {
-  create?: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput> | Prisma.MatriksCreateWithoutKriteriaInput[] | Prisma.MatriksUncheckedCreateWithoutKriteriaInput[]
-  connectOrCreate?: Prisma.MatriksCreateOrConnectWithoutKriteriaInput | Prisma.MatriksCreateOrConnectWithoutKriteriaInput[]
-  upsert?: Prisma.MatriksUpsertWithWhereUniqueWithoutKriteriaInput | Prisma.MatriksUpsertWithWhereUniqueWithoutKriteriaInput[]
-  createMany?: Prisma.MatriksCreateManyKriteriaInputEnvelope
-  set?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
-  disconnect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
-  delete?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
-  connect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
-  update?: Prisma.MatriksUpdateWithWhereUniqueWithoutKriteriaInput | Prisma.MatriksUpdateWithWhereUniqueWithoutKriteriaInput[]
-  updateMany?: Prisma.MatriksUpdateManyWithWhereWithoutKriteriaInput | Prisma.MatriksUpdateManyWithWhereWithoutKriteriaInput[]
-  deleteMany?: Prisma.MatriksScalarWhereInput | Prisma.MatriksScalarWhereInput[]
-}
-
-export type MatriksUncheckedUpdateManyWithoutKriteriaNestedInput = {
-  create?: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput> | Prisma.MatriksCreateWithoutKriteriaInput[] | Prisma.MatriksUncheckedCreateWithoutKriteriaInput[]
-  connectOrCreate?: Prisma.MatriksCreateOrConnectWithoutKriteriaInput | Prisma.MatriksCreateOrConnectWithoutKriteriaInput[]
-  upsert?: Prisma.MatriksUpsertWithWhereUniqueWithoutKriteriaInput | Prisma.MatriksUpsertWithWhereUniqueWithoutKriteriaInput[]
-  createMany?: Prisma.MatriksCreateManyKriteriaInputEnvelope
-  set?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
-  disconnect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
-  delete?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
-  connect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
-  update?: Prisma.MatriksUpdateWithWhereUniqueWithoutKriteriaInput | Prisma.MatriksUpdateWithWhereUniqueWithoutKriteriaInput[]
-  updateMany?: Prisma.MatriksUpdateManyWithWhereWithoutKriteriaInput | Prisma.MatriksUpdateManyWithWhereWithoutKriteriaInput[]
-  deleteMany?: Prisma.MatriksScalarWhereInput | Prisma.MatriksScalarWhereInput[]
-}
-
 export type MatriksCreateNestedManyWithoutAlternatifInput = {
   create?: Prisma.XOR<Prisma.MatriksCreateWithoutAlternatifInput, Prisma.MatriksUncheckedCreateWithoutAlternatifInput> | Prisma.MatriksCreateWithoutAlternatifInput[] | Prisma.MatriksUncheckedCreateWithoutAlternatifInput[]
   connectOrCreate?: Prisma.MatriksCreateOrConnectWithoutAlternatifInput | Prisma.MatriksCreateOrConnectWithoutAlternatifInput[]
@@ -446,51 +404,46 @@ export type MatriksUncheckedUpdateManyWithoutAlternatifNestedInput = {
   deleteMany?: Prisma.MatriksScalarWhereInput | Prisma.MatriksScalarWhereInput[]
 }
 
-export type MatriksCreateWithoutKriteriaInput = {
-  nilai: number
-  alternatif: Prisma.AlternatifCreateNestedOneWithoutMatriksInput
+export type MatriksCreateNestedManyWithoutKriteriaInput = {
+  create?: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput> | Prisma.MatriksCreateWithoutKriteriaInput[] | Prisma.MatriksUncheckedCreateWithoutKriteriaInput[]
+  connectOrCreate?: Prisma.MatriksCreateOrConnectWithoutKriteriaInput | Prisma.MatriksCreateOrConnectWithoutKriteriaInput[]
+  createMany?: Prisma.MatriksCreateManyKriteriaInputEnvelope
+  connect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
 }
 
-export type MatriksUncheckedCreateWithoutKriteriaInput = {
-  id?: number
-  nilai: number
-  alternatifId: number
+export type MatriksUncheckedCreateNestedManyWithoutKriteriaInput = {
+  create?: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput> | Prisma.MatriksCreateWithoutKriteriaInput[] | Prisma.MatriksUncheckedCreateWithoutKriteriaInput[]
+  connectOrCreate?: Prisma.MatriksCreateOrConnectWithoutKriteriaInput | Prisma.MatriksCreateOrConnectWithoutKriteriaInput[]
+  createMany?: Prisma.MatriksCreateManyKriteriaInputEnvelope
+  connect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
 }
 
-export type MatriksCreateOrConnectWithoutKriteriaInput = {
-  where: Prisma.MatriksWhereUniqueInput
-  create: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput>
+export type MatriksUpdateManyWithoutKriteriaNestedInput = {
+  create?: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput> | Prisma.MatriksCreateWithoutKriteriaInput[] | Prisma.MatriksUncheckedCreateWithoutKriteriaInput[]
+  connectOrCreate?: Prisma.MatriksCreateOrConnectWithoutKriteriaInput | Prisma.MatriksCreateOrConnectWithoutKriteriaInput[]
+  upsert?: Prisma.MatriksUpsertWithWhereUniqueWithoutKriteriaInput | Prisma.MatriksUpsertWithWhereUniqueWithoutKriteriaInput[]
+  createMany?: Prisma.MatriksCreateManyKriteriaInputEnvelope
+  set?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
+  disconnect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
+  delete?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
+  connect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
+  update?: Prisma.MatriksUpdateWithWhereUniqueWithoutKriteriaInput | Prisma.MatriksUpdateWithWhereUniqueWithoutKriteriaInput[]
+  updateMany?: Prisma.MatriksUpdateManyWithWhereWithoutKriteriaInput | Prisma.MatriksUpdateManyWithWhereWithoutKriteriaInput[]
+  deleteMany?: Prisma.MatriksScalarWhereInput | Prisma.MatriksScalarWhereInput[]
 }
 
-export type MatriksCreateManyKriteriaInputEnvelope = {
-  data: Prisma.MatriksCreateManyKriteriaInput | Prisma.MatriksCreateManyKriteriaInput[]
-  skipDuplicates?: boolean
-}
-
-export type MatriksUpsertWithWhereUniqueWithoutKriteriaInput = {
-  where: Prisma.MatriksWhereUniqueInput
-  update: Prisma.XOR<Prisma.MatriksUpdateWithoutKriteriaInput, Prisma.MatriksUncheckedUpdateWithoutKriteriaInput>
-  create: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput>
-}
-
-export type MatriksUpdateWithWhereUniqueWithoutKriteriaInput = {
-  where: Prisma.MatriksWhereUniqueInput
-  data: Prisma.XOR<Prisma.MatriksUpdateWithoutKriteriaInput, Prisma.MatriksUncheckedUpdateWithoutKriteriaInput>
-}
-
-export type MatriksUpdateManyWithWhereWithoutKriteriaInput = {
-  where: Prisma.MatriksScalarWhereInput
-  data: Prisma.XOR<Prisma.MatriksUpdateManyMutationInput, Prisma.MatriksUncheckedUpdateManyWithoutKriteriaInput>
-}
-
-export type MatriksScalarWhereInput = {
-  AND?: Prisma.MatriksScalarWhereInput | Prisma.MatriksScalarWhereInput[]
-  OR?: Prisma.MatriksScalarWhereInput[]
-  NOT?: Prisma.MatriksScalarWhereInput | Prisma.MatriksScalarWhereInput[]
-  id?: Prisma.IntFilter<"Matriks"> | number
-  nilai?: Prisma.FloatFilter<"Matriks"> | number
-  alternatifId?: Prisma.IntFilter<"Matriks"> | number
-  kriteriaId?: Prisma.IntFilter<"Matriks"> | number
+export type MatriksUncheckedUpdateManyWithoutKriteriaNestedInput = {
+  create?: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput> | Prisma.MatriksCreateWithoutKriteriaInput[] | Prisma.MatriksUncheckedCreateWithoutKriteriaInput[]
+  connectOrCreate?: Prisma.MatriksCreateOrConnectWithoutKriteriaInput | Prisma.MatriksCreateOrConnectWithoutKriteriaInput[]
+  upsert?: Prisma.MatriksUpsertWithWhereUniqueWithoutKriteriaInput | Prisma.MatriksUpsertWithWhereUniqueWithoutKriteriaInput[]
+  createMany?: Prisma.MatriksCreateManyKriteriaInputEnvelope
+  set?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
+  disconnect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
+  delete?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
+  connect?: Prisma.MatriksWhereUniqueInput | Prisma.MatriksWhereUniqueInput[]
+  update?: Prisma.MatriksUpdateWithWhereUniqueWithoutKriteriaInput | Prisma.MatriksUpdateWithWhereUniqueWithoutKriteriaInput[]
+  updateMany?: Prisma.MatriksUpdateManyWithWhereWithoutKriteriaInput | Prisma.MatriksUpdateManyWithWhereWithoutKriteriaInput[]
+  deleteMany?: Prisma.MatriksScalarWhereInput | Prisma.MatriksScalarWhereInput[]
 }
 
 export type MatriksCreateWithoutAlternatifInput = {
@@ -530,27 +483,51 @@ export type MatriksUpdateManyWithWhereWithoutAlternatifInput = {
   data: Prisma.XOR<Prisma.MatriksUpdateManyMutationInput, Prisma.MatriksUncheckedUpdateManyWithoutAlternatifInput>
 }
 
-export type MatriksCreateManyKriteriaInput = {
+export type MatriksScalarWhereInput = {
+  AND?: Prisma.MatriksScalarWhereInput | Prisma.MatriksScalarWhereInput[]
+  OR?: Prisma.MatriksScalarWhereInput[]
+  NOT?: Prisma.MatriksScalarWhereInput | Prisma.MatriksScalarWhereInput[]
+  id?: Prisma.IntFilter<"Matriks"> | number
+  nilai?: Prisma.FloatFilter<"Matriks"> | number
+  alternatifId?: Prisma.IntFilter<"Matriks"> | number
+  kriteriaId?: Prisma.IntFilter<"Matriks"> | number
+}
+
+export type MatriksCreateWithoutKriteriaInput = {
+  nilai: number
+  alternatif: Prisma.AlternatifCreateNestedOneWithoutMatriksInput
+}
+
+export type MatriksUncheckedCreateWithoutKriteriaInput = {
   id?: number
   nilai: number
   alternatifId: number
 }
 
-export type MatriksUpdateWithoutKriteriaInput = {
-  nilai?: Prisma.FloatFieldUpdateOperationsInput | number
-  alternatif?: Prisma.AlternatifUpdateOneRequiredWithoutMatriksNestedInput
+export type MatriksCreateOrConnectWithoutKriteriaInput = {
+  where: Prisma.MatriksWhereUniqueInput
+  create: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput>
 }
 
-export type MatriksUncheckedUpdateWithoutKriteriaInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  nilai?: Prisma.FloatFieldUpdateOperationsInput | number
-  alternatifId?: Prisma.IntFieldUpdateOperationsInput | number
+export type MatriksCreateManyKriteriaInputEnvelope = {
+  data: Prisma.MatriksCreateManyKriteriaInput | Prisma.MatriksCreateManyKriteriaInput[]
+  skipDuplicates?: boolean
 }
 
-export type MatriksUncheckedUpdateManyWithoutKriteriaInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  nilai?: Prisma.FloatFieldUpdateOperationsInput | number
-  alternatifId?: Prisma.IntFieldUpdateOperationsInput | number
+export type MatriksUpsertWithWhereUniqueWithoutKriteriaInput = {
+  where: Prisma.MatriksWhereUniqueInput
+  update: Prisma.XOR<Prisma.MatriksUpdateWithoutKriteriaInput, Prisma.MatriksUncheckedUpdateWithoutKriteriaInput>
+  create: Prisma.XOR<Prisma.MatriksCreateWithoutKriteriaInput, Prisma.MatriksUncheckedCreateWithoutKriteriaInput>
+}
+
+export type MatriksUpdateWithWhereUniqueWithoutKriteriaInput = {
+  where: Prisma.MatriksWhereUniqueInput
+  data: Prisma.XOR<Prisma.MatriksUpdateWithoutKriteriaInput, Prisma.MatriksUncheckedUpdateWithoutKriteriaInput>
+}
+
+export type MatriksUpdateManyWithWhereWithoutKriteriaInput = {
+  where: Prisma.MatriksScalarWhereInput
+  data: Prisma.XOR<Prisma.MatriksUpdateManyMutationInput, Prisma.MatriksUncheckedUpdateManyWithoutKriteriaInput>
 }
 
 export type MatriksCreateManyAlternatifInput = {
@@ -574,6 +551,29 @@ export type MatriksUncheckedUpdateManyWithoutAlternatifInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nilai?: Prisma.FloatFieldUpdateOperationsInput | number
   kriteriaId?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type MatriksCreateManyKriteriaInput = {
+  id?: number
+  nilai: number
+  alternatifId: number
+}
+
+export type MatriksUpdateWithoutKriteriaInput = {
+  nilai?: Prisma.FloatFieldUpdateOperationsInput | number
+  alternatif?: Prisma.AlternatifUpdateOneRequiredWithoutMatriksNestedInput
+}
+
+export type MatriksUncheckedUpdateWithoutKriteriaInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nilai?: Prisma.FloatFieldUpdateOperationsInput | number
+  alternatifId?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type MatriksUncheckedUpdateManyWithoutKriteriaInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nilai?: Prisma.FloatFieldUpdateOperationsInput | number
+  alternatifId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 

@@ -18,15 +18,15 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
- * Model Kriteria
- * 
- */
-export type Kriteria = Prisma.KriteriaModel
-/**
  * Model Alternatif
  * 
  */
 export type Alternatif = Prisma.AlternatifModel
+/**
+ * Model Kriteria
+ * 
+ */
+export type Kriteria = Prisma.KriteriaModel
 /**
  * Model Matriks
  * 
